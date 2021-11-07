@@ -21,7 +21,7 @@ const SignUp: NextPage = () => {
 
   return (
     <Container
-      maxWidth="sm"
+      maxWidth="md"
       style={{
         display: 'flex',
         justifyContent: 'center',
@@ -41,7 +41,7 @@ const SignUp: NextPage = () => {
           component="form"
           onSubmit={handleSubmit(onSubmit)}
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            '& .MuiTextField-root': { m: 1, width: '50ch' },
           }}
           noValidate
           autoComplete="off"
@@ -53,6 +53,7 @@ const SignUp: NextPage = () => {
               id="name"
               type="text"
               label="Name"
+              fullWidth
             />
             <TextField
               {...register('email', { required: true })}
@@ -80,7 +81,7 @@ const SignUp: NextPage = () => {
             <br />
             <NextLink href="/sign-in">
               <Link color="inherit" href="#!">
-                Already have an account
+                Already have an account ?
               </Link>
             </NextLink>
           </Box>
