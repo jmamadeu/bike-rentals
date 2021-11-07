@@ -8,6 +8,7 @@
     "airbnb",
     "airbnb/hooks",
     "next/core-web-vitals",
+    "plugin:prettier/recommended",
     "next"
   ],
   "parser": "@typescript-eslint/parser",
@@ -18,13 +19,14 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "prettier",  "@typescript-eslint"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".tsx"] }
     ],
     "react/jsx-props-no-spreading": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "import/extensions": "off"
   }
 }
