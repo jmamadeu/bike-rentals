@@ -7,7 +7,8 @@ import {
   ISaveUserFormInputs,
   SaveUserForm
 } from '../components/save-user-form';
-import { useSaveUser } from '../hooks/use-save-user';
+import { UsersList } from '../components/users-list';
+import { useCreateUser } from '../hooks/use-create-user';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -21,12 +22,12 @@ const modalStyle = {
 
 const Users: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutateAsync, error, isLoading } = useSaveUser();
+  const { mutateAsync, error, isLoading, reset  } = useCreateUser();
 
   const handleSubmit = async (user: ISaveUserFormInputs) => {
     try {
-      await mutateAsync({ ...user, id: '' });
-
+      await mutateAsync(user);
+      reset()
       toggleModal()
     } catch (err: any) {
       console.log(err?.message, 'save error');
@@ -44,8 +45,6 @@ const Users: NextPage = () => {
       </Head>
 
       <Menu>
-        <h1>Users</h1>
-
         <Modal
           open={isModalOpen}
           onClose={toggleModal}
@@ -65,6 +64,10 @@ const Users: NextPage = () => {
         <Button onClick={toggleModal} variant="contained" size="large">
           Add new user
         </Button>
+        
+        <Box sx={{ marginTop: 2 }}>
+        <UsersList />
+        </Box>
       </Menu>
     </div>
   );
