@@ -3,13 +3,15 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   getFirestore,
   setDoc
 } from 'firebase/firestore';
 import {
   CreateUserProperties,
   CreateUserWithCredentialsProperties,
-  ISaveUser
+  ISaveUser,
+  UserProperties
 } from '../models/user-model';
 import { firebaseApp } from './firebase';
 
@@ -48,4 +50,16 @@ export const saveUser = async ({ id, password, ...rest }: ISaveUser) => {
   }
 
   return await createUserWithCredentials({ ...rest, password });
+};
+
+export const getAllUsers = async () => {
+  const querySnapshot = await getDocs(collection(db, 'users'));
+
+  const users: UserProperties[] = [];
+
+  querySnapshot.forEach(doc => {
+    users.push({id: doc.id, ...doc.data()} as UserProperties);
+  });
+
+  return users;
 };
