@@ -10,18 +10,9 @@ import {
   Typography
 } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { CreateUserWithCredentialsProperties } from '../models/user-model';
 
-enum RolesEnum {
-  user = 'user',
-  manager = 'manager',
-}
-
-export type ISaveUserFormInputs = {
-  name: string;
-  email: string;
-  password: string;
-  roles: RolesEnum;
-};
+export type ISaveUserFormInputs = CreateUserWithCredentialsProperties
 
 export type SaveUserFormProperties = {
   defaultData?: ISaveUserFormInputs;
@@ -42,7 +33,8 @@ export const SaveUserForm = ({
     defaultValues: defaultData,
   });
 
-  const getFormData: SubmitHandler<ISaveUserFormInputs> = user => onSubmit(user);
+  const getFormData: SubmitHandler<ISaveUserFormInputs> = user =>
+    onSubmit(user);
 
   return (
     <section>
@@ -95,7 +87,7 @@ export const SaveUserForm = ({
 
           <Controller
             control={control}
-            name="roles"
+            name="role"
             render={({ field }) => (
               <FormControl fullWidth>
                 <InputLabel id="roles">Role</InputLabel>
@@ -104,7 +96,7 @@ export const SaveUserForm = ({
                   labelId="roles"
                   id="roles"
                   label="Role"
-                  {...register('roles', { required: true })}
+                  {...register('role', { required: true })}
                 >
                   <MenuItem value="user">User</MenuItem>
                   <MenuItem value="manager">Manager</MenuItem>

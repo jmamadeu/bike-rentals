@@ -1,8 +1,15 @@
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  setDoc
+} from 'firebase/firestore';
 import {
   CreateUserProperties,
-  CreateUserWithCredentialsProperties
+  CreateUserWithCredentialsProperties,
+  ISaveUser
 } from '../models/user-model';
 import { firebaseApp } from './firebase';
 
@@ -29,4 +36,16 @@ export const createUser = async (user: CreateUserProperties) => {
   const docRef = await addDoc(collection(db, 'users'), user);
 
   return { ...user, id: docRef.id };
+};
+
+export const saveUser = async ({ id, password, ...rest }: ISaveUser) => {
+  if (id) {
+    const userRef = doc(db, 'users', id);
+
+    setDoc(userRef, rest, { merge: true });
+
+    return { ...rest, id };
+  }
+
+  return await createUserWithCredentials({ ...rest, password });
 };
