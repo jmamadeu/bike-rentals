@@ -22,14 +22,15 @@ const modalStyle = {
 
 const Users: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutateAsync, error, isLoading, reset  } = useCreateUser();
+  const { mutateAsync, error, isLoading, reset } = useCreateUser();
 
   const handleSubmit = async (user: ISaveUserFormInputs) => {
     try {
       await mutateAsync(user);
-      reset()
-      toggleModal()
+      reset();
+      toggleModal();
     } catch (err: any) {
+      reset();
       console.log(err?.message, 'save error');
     }
   };
@@ -64,9 +65,9 @@ const Users: NextPage = () => {
         <Button onClick={toggleModal} variant="contained" size="large">
           Add new user
         </Button>
-        
+
         <Box sx={{ marginTop: 2 }}>
-        <UsersList />
+          <UsersList />
         </Box>
       </Menu>
     </div>

@@ -1,9 +1,6 @@
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import {
   addDoc,
-  collection,
-  doc,
-  getDocs,
+  collection, deleteDoc, doc, getDocs,
   getFirestore,
   setDoc
 } from 'firebase/firestore';
@@ -15,23 +12,17 @@ import {
 } from '../models/user-model';
 import { firebaseApp } from './firebase';
 
+
+
 const db = getFirestore(firebaseApp);
 
 export const createUserWithCredentials = async ({
   password,
   ...rest
 }: CreateUserWithCredentialsProperties) => {
-  const auth = getAuth(firebaseApp);
-
-  const userRef = await createUserWithEmailAndPassword(
-    auth,
-    rest.email,
-    password,
-  );
-
   const userResponse = await createUser(rest);
 
-  return { ...userRef, ...userResponse };
+  return userResponse
 };
 
 export const createUser = async (user: CreateUserProperties) => {
@@ -63,3 +54,9 @@ export const getAllUsers = async () => {
 
   return users;
 };
+
+export const deleteUser = async (id: string) => {
+  const userRef = doc(db, 'users', id)
+  
+  await deleteDoc(doc(db, "users", id));
+}
