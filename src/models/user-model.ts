@@ -3,21 +3,15 @@ export const USER_ROLES = {
   manager: 'manager',
 };
 
-export type UserAuthProperties = {
-  roles: Array<string>;
-};
-
 export type UserProperties = {
   id: string;
   name: string;
   email: string;
-  password: string;
-} & UserAuthProperties;
+  roles: Array<string>;
+};
 
 export type CreateUserProperties = Omit<UserProperties, 'id'>;
-export type CreateUserLoginProperties = Omit<
-  UserProperties,
-  'id' | 'name' | 'roles'
->;
 
-export type CreateUserResponse = Omit<UserProperties, 'password'>;
+export type CreateUserWithCredentialsProperties = Omit<UserProperties, 'id'> & {
+  password: string;
+};

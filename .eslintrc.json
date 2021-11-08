@@ -4,11 +4,13 @@
     "es2021": true
   },
   "extends": [
-    "plugin:react/recommended",
     "airbnb",
-    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:react/recommended",
     "next/core-web-vitals",
-    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "prettier",
     "next"
   ],
   "parser": "@typescript-eslint/parser",

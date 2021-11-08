@@ -1,23 +1,28 @@
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import {
-  CreateUserLoginProperties,
-  CreateUserProperties
+  CreateUserProperties,
+  CreateUserWithCredentialsProperties
 } from '../models/user-model';
 import { firebaseApp } from './firebase';
 
 const db = getFirestore(firebaseApp);
 
-export const createUserLogin = async (user: CreateUserLoginProperties) => {
+export const createUserWithCredentials = async ({
+  password,
+  ...rest
+}: CreateUserWithCredentialsProperties) => {
   const auth = getAuth(firebaseApp);
 
-  const userRef = createUserWithEmailAndPassword(
+  const userRef = await createUserWithEmailAndPassword(
     auth,
-    user.email,
-    user.password,
+    rest.email,
+    password,
   );
 
-  return userRef;
+  const userResponse = await createUser(rest);
+
+  return { ...userRef, ...userResponse };
 };
 
 export const createUser = async (user: CreateUserProperties) => {

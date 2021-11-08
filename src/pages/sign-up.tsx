@@ -1,4 +1,5 @@
-import { Box, Button, Container, Link, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Alert, Box, Container, Link, TextField } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -13,10 +14,15 @@ type IFormInputs = {
 
 const SignUp: NextPage = () => {
   const { register, handleSubmit } = useForm<IFormInputs>();
-  const { mutate } = useCreateUser();
+  const { mutateAsync, error, isLoading } = useCreateUser();
 
   const onSubmit: SubmitHandler<IFormInputs> = async user => {
-    mutate({ ...user, roles: ['user'] });
+    try {
+      const response = await mutateAsync({ ...user, roles: ['user'] });
+
+      console.log(response, "aqui");
+
+    } catch (err) {}
   };
 
   return (
@@ -37,15 +43,24 @@ const SignUp: NextPage = () => {
       </Head>
 
       <section>
+        <h1>Create your account free</h1>
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
+          style={{ width: '50ch' }}
           sx={{
-            '& .MuiTextField-root': { m: 1, width: '50ch' },
+            '& .MuiTextField-root': { m: 1 },
+            '& .MuiPaper-root': { m: 1, width: '100%' },
           }}
           noValidate
           autoComplete="off"
         >
+          {error && (
+            <Alert severity="error" color="error">
+              {error?.message}
+            </Alert>
+          )}
+
           <Box style={{ flexDirection: 'column', display: 'flex' }}>
             <TextField
               {...register('name', { required: true })}
@@ -61,6 +76,7 @@ const SignUp: NextPage = () => {
               id="email"
               type="email"
               label="Email"
+              fullWidth
             />
             <TextField
               {...register('password', { required: true })}
@@ -68,16 +84,24 @@ const SignUp: NextPage = () => {
               type="password"
               id="password"
               label="Password"
+              fullWidth
             />
           </Box>
           <Box style={{ margin: '8px' }}>
-            <Button
-              type="submit"
+            <LoadingButton
+              sx={{
+                marginBottom: 1,
+                '.MuiLoadingButton-startIconLoadingStart': {
+                  marginRight: 1,
+                },
+              }}
+              loading={isLoading}
               variant="outlined"
-              style={{ marginBottom: '12px' }}
+              type="submit"
+              loadingIndicator="Saving"
             >
-              Sign up
-            </Button>
+              Create account
+            </LoadingButton>
             <br />
             <NextLink href="/sign-in">
               <Link color="inherit" href="#!">

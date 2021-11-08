@@ -2,8 +2,8 @@ import React, { createContext } from 'react';
 import { CreateUserProperties } from '../models/user-model';
 
 interface AuthContextProperties {
-  signIn: (email: string, password: string) => void;
-  signUp: (user: CreateUserProperties) => void;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (user: CreateUserProperties) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProperties>(
@@ -11,7 +11,13 @@ export const AuthContext = createContext<AuthContextProperties>(
 );
 
 export const AuthProvider: React.FC = ({ children }) => {
-  function signUp(user: CreateUserProperties) {}
+  async function signUp(user: CreateUserProperties) {}
 
-  return <AuthContext value={{ signUp }}>{children}</AuthContext>;
+  async function signIn(email: string, password: string) {}
+
+  return (
+    <AuthContext.Provider value={{ signUp, signIn }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
