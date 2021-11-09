@@ -1,5 +1,6 @@
 import {
   BikeScooter as BikeScooterIcon,
+  BookmarkBorder as BookmarkBorderIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Group as GroupIcon,
@@ -23,7 +24,8 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import NextLink from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../contexts/auth-context';
 import { stringAvatar } from '../../utils/theme';
 import { AppBar, DrawerHeader, Main } from './styles';
 
@@ -37,10 +39,12 @@ export type AppBarProps = MuiAppBarProps & {
 const MENU_ITEMS = [
   { icon: GroupIcon, title: 'Users', link: '/users' },
   { icon: BikeScooterIcon, title: 'Bikes', link: '/bikes' },
+  { icon: BookmarkBorderIcon, title: 'Rentals', link: '/rentals' },
 ];
 
 export const Menu: React.FC = ({ children }) => {
   const theme = useTheme();
+  const { user } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
 
@@ -73,7 +77,7 @@ export const Menu: React.FC = ({ children }) => {
               Bike Rentals
             </Typography>
 
-            <Avatar {...stringAvatar('João Amadeu')} />
+            {user && <Avatar {...stringAvatar(user?.name)} />}
           </Box>
         </Toolbar>
       </AppBar>

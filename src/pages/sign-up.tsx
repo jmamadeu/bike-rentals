@@ -3,8 +3,11 @@ import { Alert, Box, Container, Link, TextField } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AuthContext } from '../contexts/auth-context';
 import { useCreateUser } from '../hooks/use-create-user';
+import { UserRoleEnum } from '../models/user-model';
 
 type IFormInputs = {
   name: string;
@@ -16,12 +19,12 @@ const SignUp: NextPage = () => {
   const { register, handleSubmit } = useForm<IFormInputs>();
   const { mutateAsync, error, isLoading } = useCreateUser();
 
+  const { signIn } = useContext(AuthContext);
+
   const onSubmit: SubmitHandler<IFormInputs> = async user => {
     try {
-      const response = await mutateAsync({ ...user, roles: ['user'] });
-
-      console.log(response, "aqui");
-
+      const response = await mutateAsync({ ...user, role: UserRoleEnum.user });
+      await signIn(user.email, user.password);
     } catch (err) {}
   };
 

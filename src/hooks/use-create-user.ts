@@ -11,7 +11,8 @@ export const useCreateUser = () => {
         onMutate: (newUser) => {
           const oldUsers = queryClient.getQueryData('users')
           
-          queryClient.setQueryData('users', (oldUsers: any) => [...oldUsers, newUser])
+          if(oldUsers)
+            queryClient.setQueryData('users', (oldUsers: any) => [...oldUsers, newUser])
 
           return () => oldUsers
         },

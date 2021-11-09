@@ -1,3 +1,4 @@
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {
   addDoc,
   collection,
@@ -5,7 +6,9 @@ import {
   doc,
   getDocs,
   getFirestore,
-  setDoc
+  query,
+  setDoc,
+  where
 } from 'firebase/firestore';
 import {
   CreateUserProperties,
@@ -15,13 +18,40 @@ import {
 } from '../models/user-model';
 import { firebaseApp } from './firebase';
 
+
+
 const db = getFirestore(firebaseApp);
+
+export const getUserByEmail = async (email: string) => {
+  const q = query(collection(db, 'users'), where('email', '==', email));
+
+  let user: UserProperties = {} as UserProperties;
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach(doc => {
+    user = { ...doc.data(), id: doc.id } as UserProperties;
+  });
+
+  return user;
+};
+
 
 export const createUserWithCredentials = async ({
   password,
   ...rest
 }: CreateUserWithCredentialsProperties) => {
+  console.log(rest)
+  const userEmailResponse = await getUserByEmail(rest.email)
+
+  if(userEmailResponse.id) {
+    throw new Error ("User already exists")
+  }
+
+  const auth = getAuth(firebaseApp)
   const userResponse = await createUser(rest);
+  
+  createUserWithEmailAndPassword(auth, rest.email, password)
+  
 
   return userResponse;
 };
@@ -57,3 +87,9 @@ export const deleteUser = async (id: string) => {
 
   await deleteDoc(doc(db, 'users', id));
 };
+
+export const login = async (email: string, password: string) => {
+  const auth = getAuth(firebaseApp)
+
+  return await signInWithEmailAndPassword(auth, email, password)
+}

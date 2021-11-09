@@ -2,7 +2,9 @@ import { Box, Button, Container, Link, TextField } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { AuthContext } from '../contexts/auth-context';
 
 type Inputs = {
   email: string;
@@ -11,10 +13,10 @@ type Inputs = {
 
 const SignIn: NextPage = () => {
   const { register, handleSubmit } = useForm<Inputs>();
+  const { signIn } = useContext(AuthContext);
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<Inputs> = async data =>
+    signIn(data.email, data.password);
 
   return (
     <Container
