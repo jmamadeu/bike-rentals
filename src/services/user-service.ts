@@ -34,7 +34,7 @@ export const createUser = async (user: CreateUserProperties) => {
 
 export const saveUser = async ({ id, ...rest }: ISaveUser) => {
   const userRef = doc(db, 'users', id);
-console.log(id, rest)
+
   setDoc(userRef, rest, { merge: true });
 
   return { ...rest, id };
