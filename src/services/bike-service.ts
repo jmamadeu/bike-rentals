@@ -7,7 +7,7 @@ import {
   getFirestore,
   setDoc
 } from 'firebase/firestore';
-import { BikeProperties, IBikeFormInputs } from '../models/bike-model';
+import { BikeProperties, IBikeFormInputs, IRentBikeProperties } from '../models/bike-model';
 import { firebaseApp } from './firebase';
 
 const db = getFirestore(firebaseApp);
@@ -43,3 +43,17 @@ export const updateBike = async ({
 
   return { ...bike, id };
 };
+
+export const rentBike = async ({ bikeId, ...rent }: IRentBikeProperties ) => {
+  const bikeRef = doc(db, 'bikes', bikeId);
+
+  await setDoc(bikeRef, { rent, isAvailable: false }, { merge: true });
+
+  return rent
+}
+
+export const cancelRentedBike = async (bikeId: string) => {
+  const bikeRef = doc(db, 'bikes', bikeId);
+
+  await setDoc(bikeRef, { rent: {}, isAvailable: true }, { merge: true });
+}

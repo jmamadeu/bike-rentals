@@ -2,19 +2,21 @@ import { LoadingButton } from '@mui/lab';
 import {
   Alert,
   Box,
-  FormControlLabel,
-  FormGroup,
-  Switch,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField
 } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { IBikeFormInputs } from '../models/bike-model';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { IBikeFormInputs, IBikeFormInputsDisabled } from '../models/bike-model';
 
 export type BikeFormProperties = {
   defaultValues?: IBikeFormInputs;
   onSubmit: (user: IBikeFormInputs) => void;
   error?: string;
   isLoading: boolean;
+  disabledInputs?: IBikeFormInputsDisabled;
 };
 
 export const BikeForm = ({
@@ -22,8 +24,14 @@ export const BikeForm = ({
   isLoading,
   defaultValues,
   onSubmit,
+  disabledInputs,
 }: BikeFormProperties) => {
-  const { register, handleSubmit } = useForm<IBikeFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<IBikeFormInputs>({
     defaultValues,
   });
 
@@ -58,6 +66,7 @@ export const BikeForm = ({
             label="Model"
             fullWidth
             autoFocus={true}
+            disabled={disabledInputs?.model}
           />
           <TextField
             {...register('color', { required: true })}
@@ -66,6 +75,7 @@ export const BikeForm = ({
             type="color"
             label="Color"
             fullWidth
+            disabled={disabledInputs?.color}
           />
           <TextField
             {...register('location', { required: true })}
@@ -74,6 +84,7 @@ export const BikeForm = ({
             type="text"
             label="Location"
             fullWidth
+            disabled={disabledInputs?.location}
           />
           <TextField
             {...register('rating', { required: true, min: 0, max: 5 })}
@@ -82,37 +93,45 @@ export const BikeForm = ({
             type="number"
             label="Rating"
             fullWidth
+            disabled={disabledInputs?.rating}
           />
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  {...register('isAvailable', {
-                    value: defaultValues?.isAvailable,
-                  })}
-                  defaultChecked
-                />
-              }
-              label="Available ?"
-            />
-          </FormGroup>
-        </Box>
-        <Box style={{ margin: '8px' }}>
-          <LoadingButton
-            sx={{
-              marginBottom: 1,
-              '.MuiLoadingButton-startIconLoadingStart': {
-                marginRight: 1,
-              },
-            }}
-            loading={isLoading}
-            variant="outlined"
-            type="submit"
-            loadingIndicator="Saving"
-          >
-            Save
-          </LoadingButton>
-          <br />
+          <Controller
+            control={control}
+            name="isAvailable"
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel id="available">Is Available</InputLabel>
+                <Select
+                  {...field}
+                  labelId="available"
+                  id="available"
+                  label="Is Available"
+                  {...register('isAvailable')}
+                  disabled={disabledInputs?.isAvailable}
+                >
+                  <MenuItem value="true">Yes</MenuItem>
+                  <MenuItem value="false">No</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          />
+
+          <Box style={{ margin: '8px' }}>
+            <LoadingButton
+              sx={{
+                marginBottom: 1,
+                '.MuiLoadingButton-startIconLoadingStart': {
+                  marginRight: 1,
+                },
+              }}
+              loading={isLoading}
+              variant="outlined"
+              type="submit"
+              loadingIndicator="Saving"
+            >
+              Save
+            </LoadingButton>
+          </Box>
         </Box>
       </Box>
     </section>
