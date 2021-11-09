@@ -12,25 +12,27 @@ import {
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateUserWithCredentialsProperties } from '../models/user-model';
 
-export type ISaveUserFormInputs = CreateUserWithCredentialsProperties
+export type ISaveUserFormInputs = CreateUserWithCredentialsProperties;
 
 export type SaveUserFormProperties = {
-  defaultData?: ISaveUserFormInputs;
+  defaultValues?: Partial<ISaveUserFormInputs>;
   onSubmit: (user: ISaveUserFormInputs) => void;
   error?: string;
-  title: string;
+  title?: string;
   isLoading: boolean;
+  hiddenPassword?: boolean;
 };
 
 export const SaveUserForm = ({
   error,
   title,
   isLoading,
-  defaultData,
+  defaultValues,
   onSubmit,
+  hiddenPassword = false,
 }: SaveUserFormProperties) => {
   const { register, handleSubmit, control } = useForm<ISaveUserFormInputs>({
-    defaultValues: defaultData,
+    defaultValues,
   });
 
   const getFormData: SubmitHandler<ISaveUserFormInputs> = user =>
@@ -76,14 +78,16 @@ export const SaveUserForm = ({
             label="Email"
             fullWidth
           />
-          <TextField
-            {...register('password', { required: true })}
-            required
-            type="password"
-            id="password"
-            label="Password"
-            fullWidth
-          />
+          {!hiddenPassword && (
+            <TextField
+              {...register('password', { required: true })}
+              required
+              type="password"
+              id="password"
+              label="Password"
+              fullWidth
+            />
+          )}
 
           <Controller
             control={control}

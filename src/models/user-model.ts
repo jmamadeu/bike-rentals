@@ -16,4 +16,4 @@ export type CreateUserWithCredentialsProperties = Omit<UserProperties, 'id'> & {
   password: string;
 };
 
-export type ISaveUser = UserProperties & { password: string };
+export type ISaveUser = UserProperties;
