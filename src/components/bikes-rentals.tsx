@@ -80,6 +80,7 @@ export function BikesRentals() {
       });
 
       handleCloseBikeEditDialog();
+      queryClient.invalidateQueries('bike-rentals');
     } catch (error: any) {
       setSnackbarOptions({
         message: error.message,
@@ -104,6 +105,7 @@ export function BikesRentals() {
       });
 
       queryClient.invalidateQueries('bikes');
+      queryClient.invalidateQueries('bike-rentals');
     } catch (err) {}
   }
 

@@ -11,7 +11,8 @@ const Home: NextPage = () => (
     </Head>
 
     <Menu>
-      <h1>teste</h1>
+      <h1>Bike Rentals</h1>
+      <p>Rent or cancel you rent for any bike anytime</p>
     </Menu>
   </div>
 );
