@@ -42,6 +42,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         Router.push('/sign-in');
       }
       auth = JSON.parse(auth);
+      console.log(auth, "auth")
 
       const userParsed = {
         role: auth?.role,

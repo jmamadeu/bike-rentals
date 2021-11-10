@@ -35,9 +35,9 @@ export type AppBarProps = MuiAppBarProps & {
 };
 
 const MENU_ITEMS = [
-  { icon: GroupIcon, title: 'Users', link: '/users' },
-  { icon: BikeScooterIcon, title: 'Bikes', link: '/bikes' },
-  { icon: BookmarkBorderIcon, title: 'Rentals', link: '/rentals' },
+  { icon: GroupIcon, title: 'Users', link: '/users', role: 'manager' },
+  { icon: BikeScooterIcon, title: 'Bikes', link: '/bikes', role: 'manager' },
+  { icon: BookmarkBorderIcon, title: 'Rentals', link: '/rentals', role: 'user' },
 ];
 
 export const Menu: React.FC = ({ children }) => {
@@ -103,7 +103,7 @@ export const Menu: React.FC = ({ children }) => {
         </DrawerHeader>
         <Divider />
         <List>
-          {MENU_ITEMS.map(({ title, icon: Icon, link }, index) => (
+          {MENU_ITEMS.filter(m => m.role === user.role).map(({ title, icon: Icon, link }, index) => (
             <NextLink href={link} key={index}>
               <ListItem button>
                 <ListItemIcon>
