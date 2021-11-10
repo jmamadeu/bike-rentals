@@ -51,7 +51,9 @@ export const AuthProvider: React.FC = ({ children }) => {
       };
 
       setUser(userParsed);
-    } catch (err) {}
+    } catch (err) {
+      Router.push('/sign-in');
+    }
   }, []);
 
   return (

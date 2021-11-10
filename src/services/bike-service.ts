@@ -5,7 +5,9 @@ import {
   doc,
   getDocs,
   getFirestore,
-  setDoc
+  query,
+  setDoc,
+  where
 } from 'firebase/firestore';
 import { BikeProperties, IBikeFormInputs, IRentBikeProperties } from '../models/bike-model';
 import { firebaseApp } from './firebase';
@@ -56,4 +58,17 @@ export const cancelRentedBike = async (bikeId: string) => {
   const bikeRef = doc(db, 'bikes', bikeId);
 
   await setDoc(bikeRef, { rent: {}, isAvailable: true }, { merge: true });
+}
+
+export async function getBikeRentals() {
+  const q = query(collection(db, "bikes"), where("isAvailable", "==", false));
+  const querySnapshot = await getDocs(q);
+
+  const bikes: BikeProperties[] = [];
+
+  querySnapshot.forEach(doc => {
+    bikes.push({ id: doc.id, ...doc.data() } as BikeProperties);
+  });
+
+  return bikes;
 }

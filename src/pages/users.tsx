@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import {
   SaveUserForm
 } from '../components/save-user-form';
 import { UsersList } from '../components/users-list';
+import { UsersWhoReservedBike } from '../components/users-who-reserved-bike';
 import { useCreateUser } from '../hooks/use-create-user';
 
 const modalStyle = {
@@ -68,6 +69,9 @@ const Users: NextPage = () => {
 
         <Box sx={{ marginTop: 2 }}>
           <UsersList />
+
+          <Typography variant='h4'>Users who reserved a bike</Typography>
+          <UsersWhoReservedBike />
         </Box>
       </Menu>
     </div>

@@ -7,9 +7,7 @@ import {
   Menu as MenuIcon
 } from '@mui/icons-material';
 import {
-  AppBarProps as MuiAppBarProps,
-  Avatar,
-  Box,
+  AppBarProps as MuiAppBarProps, Avatar, Box,
   CssBaseline,
   Divider,
   Drawer,

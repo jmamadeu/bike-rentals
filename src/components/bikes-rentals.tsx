@@ -117,6 +117,7 @@ export function BikesRentals() {
       });
 
       queryClient.invalidateQueries('bikes');
+      queryClient.invalidateQueries('bike-rentals');
     } catch (err) {}
   }
 

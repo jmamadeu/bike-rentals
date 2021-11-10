@@ -2,9 +2,11 @@ export function stringToColor(string: string) {
   let hash = 0;
   let i;
 
+  if(!string) return "#fff"
+
   /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  for (i = 0; i < string?.length; i += 1) {
+    hash = string?.charCodeAt(i) + ((hash << 5) - hash);
   }
 
   let color = '#';
@@ -19,6 +21,8 @@ export function stringToColor(string: string) {
 }
 
 function getChildren(name: string) {
+  if(!name) return ""
+  
   const nameSplitted = name.split(' ')
   
   let children = nameSplitted[0][0]
